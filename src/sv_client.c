@@ -530,11 +530,11 @@ void SV_DirectConnect( netadr_t from ) {
 	
 	if(from.type != NA_BOT) {
 
-	if(version != PROTOCOL_VERSION) {
-        printf('Client %s has a different protocol version (%i) than the server (%i).\n', NET_AdrToString(from), version, PROTOCOL_VERSION);
+        if(version != PROTOCOL_VERSION) {
+            printf('Client %s has a different protocol version (%i) than the server (%i).\n', NET_AdrToString(from), version, PROTOCOL_VERSION);
+            // test
+        }
 
-        // test
-	}
 	
 	challenge = atoi(Info_ValueForKey(userinfo, "challenge"));
 	qport = atoi(Info_ValueForKey(userinfo, "qport"));
