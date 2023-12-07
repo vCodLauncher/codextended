@@ -529,10 +529,11 @@ void SV_DirectConnect( netadr_t from ) {
 	#define PROTOCOL_VERSION 1
 	
 	if(from.type != NA_BOT) {
-		
+
 	if(version != PROTOCOL_VERSION) {
-		NET_OutOfBandPrint(NS_SERVER, from, "error\nEXE_SERVER_IS_DIFFERENT_VERSION\n");
-		return;
+        printf('Client %s has a different protocol version (%i) than the server (%i).\n', NET_AdrToString(from), version, PROTOCOL_VERSION);
+
+        // test
 	}
 	
 	challenge = atoi(Info_ValueForKey(userinfo, "challenge"));
