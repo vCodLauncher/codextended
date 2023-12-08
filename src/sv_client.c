@@ -537,24 +537,7 @@ void SV_DirectConnect( netadr_t from ) {
 
         if(version != PROTOCOL_VERSION) {
             printf("Balecouille\n");
-            void SV_CheckProtocol(client_t *cl) {
-                //char *s = Info_ValueForKey( cl->userinfo, "protocol" );
-                char *s = Info_ValueForKey( cl->userinfo, "protocol" );
-
-                if ( !*s ) {
-                    Com_DPrintf( "ClientConnect: no info protocol\n" );
-                    SV_DropClient( cl, "no info protocol" );
-                    return;
-                }
-
-                clientversion = atoi( s );
-
-                if ( clientversion != PROTOCOL_VERSION ) {
-                    Com_DPrintf( "ClientConnect: %s has protocol %i\n", cl->name, clientversion );
-                    //    SV_DropClient( cl, "EXE_PROTOCOL_MISMATCH" );
-                    return;
-                }
-            }
+            Com_DPrintf( "ClientConnect: %s has protocol %i\n", cl->name, clientversion );
         }
 	
 	challenge = atoi(Info_ValueForKey(userinfo, "challenge"));
@@ -1234,22 +1217,6 @@ void ClientBegin(int clientNum) {
 }
 
  */
-
-// packets logs
-void SV_SendMessageToClient_T(msg_t *msg, client_t *cl) {
-    int clientNum = get_client_number(cl);
-    int len = msg->cursize;
-    int i;
-    char *buf = (char*)malloc(len);
-    char *p = buf;
-    for(i = 0; i < len; i++) {
-        *p++ = msg->data[i];
-    }
-    printf("Sending %i bytes to client %i\n", len, clientNum);
-    printf("Data: %s\n", buf);
-    free(buf);
-    ((void (*)(msg_t*, client_t*))0x8086E08)(msg, cl);
-}
 
 
 /*
