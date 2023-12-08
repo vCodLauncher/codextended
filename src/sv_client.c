@@ -27,6 +27,7 @@ void (*MSG_WriteByte)(msg_t*,int) = (void(*)(msg_t*,int))0x807F090;
 void (*MSG_WriteShort)(msg_t*,int) = (void(*)(msg_t*,int))0x807F0BC;
 void (*MSG_WriteBigString)(msg_t*,const char*) = (void(*)(msg_t*,const char*))0x807A758;
 void (*SV_SendMessageToClient)(msg_t*,client_t*) = (void(*)(msg_t*,client_t*))0x808F680;
+void (*SV_SendServerCommand)(client_t*,int,const char*) = (void(*)(client_t*,int,const char*))0x808F844;
 
 int clientversion = 0;
 
@@ -517,7 +518,10 @@ void SV_DirectConnect( netadr_t from ) {
 	*(int*)&call = 0x8085498;
 	#else if CODPATCH == 5
 	*(int*)&call = 0x8089E7E;
-	#endif
+    #endif
+
+
+
 	
 	int clientNum, i, i_challenge, challenge, qport, ping;
 	client_t *cl, *newcl;
@@ -533,10 +537,25 @@ void SV_DirectConnect( netadr_t from ) {
 
         if(version != PROTOCOL_VERSION) {
             printf("Balecouille\n");
-            // print protocol version of the client
-            //NET_OutOfBandPrint( NS_SERVER, from, "print\nEXE_PROTOCOL_MISMATCH %i", PROTOCOL_VERSION );
-        }
+            void SV_CheckProtocol(client_t *cl) {
+                //char *s = Info_ValueForKey( cl->userinfo, "protocol" );
+                char *s = Info_ValueForKey( cl->userinfo, "protocol" );
 
+                if ( !*s ) {
+                    Com_DPrintf( "ClientConnect: no info protocol\n" );
+                    SV_DropClient( cl, "no info protocol" );
+                    return;
+                }
+
+                clientversion = atoi( s );
+
+                if ( clientversion != PROTOCOL_VERSION ) {
+                    Com_DPrintf( "ClientConnect: %s has protocol %i\n", cl->name, clientversion );
+                    //    SV_DropClient( cl, "EXE_PROTOCOL_MISMATCH" );
+                    return;
+                }
+            }
+        }
 	
 	challenge = atoi(Info_ValueForKey(userinfo, "challenge"));
 	qport = atoi(Info_ValueForKey(userinfo, "qport"));
@@ -1195,7 +1214,7 @@ void ClientBegin(int clientNum) {
 
 // wysix test
 
-void SV_CheckProtocol(client_t *cl) {
+/* void SV_CheckProtocol(client_t *cl) {
     //char *s = Info_ValueForKey( cl->userinfo, "protocol" );
     char *s = Info_ValueForKey( cl->userinfo, "protocol" );
 
@@ -1213,6 +1232,8 @@ void SV_CheckProtocol(client_t *cl) {
         return;
     }
 }
+
+ */
 
 // packets logs
 void SV_SendMessageToClient_T(msg_t *msg, client_t *cl) {
