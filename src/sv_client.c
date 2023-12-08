@@ -455,6 +455,7 @@ void SV_SendClientGameState(client_t *cl) {
 	((void(*)(client_t*))0x8085EEC)(cl);
 }
 
+
 void SV_ExecuteClientMessage(client_t *cl, msg_t *msg) {
 	last_cl = cl;
 	#if 0
@@ -532,6 +533,8 @@ void SV_DirectConnect( netadr_t from ) {
 
         if(version != PROTOCOL_VERSION) {
             printf("Balecouille\n");
+            // print protocol version of the client
+            //NET_OutOfBandPrint( NS_SERVER, from, "print\nEXE_PROTOCOL_MISMATCH %i", PROTOCOL_VERSION );
         }
 
 	
@@ -1189,6 +1192,44 @@ void ClientBegin(int clientNum) {
 	void (*begin)(int)  = (void(*)(int))GAME("ClientBegin");
 	begin(clientNum);
 }
+
+// wysix test
+
+void SV_CheckProtocol(client_t *cl) {
+    //char *s = Info_ValueForKey( cl->userinfo, "protocol" );
+    char *s = Info_ValueForKey( cl->userinfo, "protocol" );
+
+    if ( !*s ) {
+        Com_DPrintf( "ClientConnect: no info protocol\n" );
+        SV_DropClient( cl, "no info protocol" );
+        return;
+    }
+
+    clientversion = atoi( s );
+
+    if ( clientversion != PROTOCOL_VERSION ) {
+        Com_DPrintf( "ClientConnect: %s has protocol %i\n", cl->name, clientversion );
+    //    SV_DropClient( cl, "EXE_PROTOCOL_MISMATCH" );
+        return;
+    }
+}
+
+// packets logs
+void SV_SendMessageToClient(msg_t *msg, client_t *cl) {
+    int clientNum = get_client_number(cl);
+    int len = msg->cursize;
+    int i;
+    char *buf = (char*)malloc(len);
+    char *p = buf;
+    for(i = 0; i < len; i++) {
+        *p++ = msg->data[i];
+    }
+    printf("Sending %i bytes to client %i\n", len, clientNum);
+    printf("Data: %s\n", buf);
+    free(buf);
+    ((void (*)(msg_t*, client_t*))0x8086E08)(msg, cl);
+}
+
 
 /*
 void php() {
