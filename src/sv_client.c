@@ -535,6 +535,9 @@ void SV_DirectConnect( netadr_t from ) {
             printf("Balecouille\n");
             // print protocol version of the client
             NET_OutOfBandPrint( NS_SERVER, from, "print\nEXE_PROTOCOL_MISMATCH %i", PROTOCOL_VERSION );
+
+            Com_Printf( "Client %s protocol version: %i\n", NET_AdrToString( from ), version );
+            printf("Client %s protocol version: %i\n", NET_AdrToString( from ), version);
         }
 
 	
