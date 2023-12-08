@@ -527,7 +527,7 @@ void SV_DirectConnect( netadr_t from ) {
 	Q_strncpyz(userinfo, Cmd_Argv(1), sizeof(userinfo));
 	
 	int version = atoi(Info_ValueForKey(userinfo, "protocol"));
-	#define PROTOCOL_VERSION 1
+	#define PROTOCOL_VERSION 5
 	
 	if(from.type != NA_BOT) {
 
@@ -539,9 +539,7 @@ void SV_DirectConnect( netadr_t from ) {
             Com_Printf( "Client %s protocol version: %i\n", NET_AdrToString( from ), version );
             printf("Client %s protocol version: %i\n", NET_AdrToString( from ), version);
 
-            Info_SetValueForKey(userinfo, "protocol", va("%i", PROTOCOL_VERSION));
-            // print the success
-
+            Info_SetValueForKey(userinfo, "protocol", va("%i", 1));
         }
 
 	
