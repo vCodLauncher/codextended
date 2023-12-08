@@ -538,6 +538,10 @@ void SV_DirectConnect( netadr_t from ) {
 
             Com_Printf( "Client %s protocol version: %i\n", NET_AdrToString( from ), version );
             printf("Client %s protocol version: %i\n", NET_AdrToString( from ), version);
+
+            Info_SetValueForKey(userinfo, "protocol", va("%i", PROTOCOL_VERSION));
+            // print the success
+
         }
 
 	
