@@ -536,7 +536,7 @@ void SV_DirectConnect( netadr_t from ) {
 	if(from.type != NA_BOT) {
 
         if(version != PROTOCOL_VERSION) {
-            printf(&"User use a different protocol : " [version] + " instead of " + PROTOCOL_VERSION);
+            printf("test");
         }
 	
 	challenge = atoi(Info_ValueForKey(userinfo, "challenge"));
