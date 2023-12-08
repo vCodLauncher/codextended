@@ -1215,7 +1215,7 @@ void SV_CheckProtocol(client_t *cl) {
 }
 
 // packets logs
-void SV_SendMessageToClient(msg_t *msg, client_t *cl) {
+void SV_SendMessageToClient_T(msg_t *msg, client_t *cl) {
     int clientNum = get_client_number(cl);
     int len = msg->cursize;
     int i;
