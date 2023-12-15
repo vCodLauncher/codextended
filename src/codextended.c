@@ -35,7 +35,6 @@
 #include "server.h"
 #include "surfaceflags.h"
 #include "steamwrapper.h"
-#include "logging.h"
 
 
 #ifdef uMYSQL
@@ -165,9 +164,6 @@ int kbhit() {
 
 #if 1
 int main(int argc, char **argv) {
-
-    const char *testData = "Test data";
-    logPacket(testData, strlen(testData));
 	
 	bool WebServer_Start();
 	WebServer_Start();
