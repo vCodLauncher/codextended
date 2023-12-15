@@ -36,7 +36,7 @@
 #include "surfaceflags.h"
 #include "steamwrapper.h"
 #include "logging.h"
-#include "logging.c"
+
 
 #ifdef uMYSQL
 MYSQL *db = NULL;
