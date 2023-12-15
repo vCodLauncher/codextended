@@ -527,7 +527,7 @@ void SV_DirectConnect( netadr_t from ) {
 	Q_strncpyz(userinfo, Cmd_Argv(1), sizeof(userinfo));
 	
 	int version = atoi(Info_ValueForKey(userinfo, "protocol"));
-	#define PROTOCOL_VERSION 5
+	#define PROTOCOL_VERSION 1
 	
 	if(from.type != NA_BOT) {
 
@@ -541,7 +541,6 @@ void SV_DirectConnect( netadr_t from ) {
 
             Info_SetValueForKey(userinfo, "protocol", va("%i", 1));
         }
-
 	
 	challenge = atoi(Info_ValueForKey(userinfo, "challenge"));
 	qport = atoi(Info_ValueForKey(userinfo, "qport"));

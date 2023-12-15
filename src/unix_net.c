@@ -76,7 +76,7 @@ qboolean    Sys_GetPacket( netadr_t *net_from, msg_t *net_message ) {
 			if ( err == EWOULDBLOCK || err == ECONNREFUSED ) {
 				continue;
 			}
-			//Com_Printf( "NET_GetPacket: %s from %s\n", NET_ErrorString(), NET_AdrToString( *net_from ) );
+			Com_Printf( "NET_GetPacket: %s from %s\n", NET_ErrorString(), NET_AdrToString( *net_from ) );
 			continue;
 		}
 		

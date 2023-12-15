@@ -16,6 +16,7 @@
 */
 
 #include "server.h"
+#include "logging.h"
 
 Netchan_Setup_t Netchan_Setup = (Netchan_Setup_t)0x808119C;
 
@@ -28,6 +29,15 @@ NET_SendPacket_t NET_SendPacket = (NET_SendPacket_t)0x8080D28;
 
 #define MAX_MSGLEN              32768
 
+// Wrapper function for NET_SendPacket with logging
+void NET_SendPacketWithLogging(netsrc_t sock, int length, const void *data, netadr_t to) {
+    // Log the packet details
+    logPacket(data, length);
+
+    // Call the original NET_SendPacket function
+    NET_SendPacket(sock, length, data, to);
+}
+
 /*
 ===============
 NET_OutOfBandPrint
@@ -35,25 +45,23 @@ NET_OutOfBandPrint
 Sends a text message in an out-of-band datagram
 ================
 */
-/*
 void QDECL NET_OutOfBandPrint( netsrc_t sock, netadr_t adr, const char *format, ... ) {
-	va_list argptr;
-	char string[MAX_MSGLEN];
+    va_list argptr;
+    char string[MAX_MSGLEN];
 
-	// set the header
-	string[0] = -1;
-	string[1] = -1;
-	string[2] = -1;
-	string[3] = -1;
+    // set the header
+    string[0] = -1;
+    string[1] = -1;
+    string[2] = -1;
+    string[3] = -1;
 
-	va_start( argptr, format );
-	vsnprintf( string + 4, sizeof( string ) - 4, format, argptr );
-	va_end( argptr );
+    va_start( argptr, format );
+    vsnprintf( string + 4, sizeof( string ) - 4, format, argptr );
+    va_end( argptr );
 
-	// send the datagram
-	NET_SendPacket( sock, strlen( string ), string, adr );
+    // send the datagram using the wrapper function
+    NET_SendPacketWithLogging(sock, strlen(string), string, adr);
 }
-*/
 
 #if CODPATCH == 1
 NET_StringToAdr_t NET_StringToAdr = (NET_StringToAdr_t)0x8080C38;
